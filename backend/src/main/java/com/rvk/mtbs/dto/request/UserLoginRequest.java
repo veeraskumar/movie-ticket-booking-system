@@ -6,5 +6,5 @@ import jakarta.validation.constraints.Size;
 
 public record UserLoginRequest(@Email(message = "Email is required") String email,
 		@NotBlank(message = "Password is required") 
-		@Size(min = 6, message = "please fill atleast 6 character") String password) {
+		@Size(min = 8, message = "please fill atleast 8 character") String password) {
 }

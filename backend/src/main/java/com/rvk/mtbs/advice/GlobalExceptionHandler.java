@@ -13,6 +13,7 @@ import com.rvk.mtbs.dto.response.ErrorResponse;
 import com.rvk.mtbs.exception.BookingNotFoundException;
 import com.rvk.mtbs.exception.EmailAlreadyExistsException;
 import com.rvk.mtbs.exception.InvalidPasswordException;
+import com.rvk.mtbs.exception.InvalidResetCodeException;
 import com.rvk.mtbs.exception.InvalidSeatConfigurationException;
 import com.rvk.mtbs.exception.PasswordMismatchException;
 import com.rvk.mtbs.exception.ShowNotFoundException;
@@ -87,5 +88,18 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorResponse> handleException(Exception ex) {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 				.body(ErrorMapper.toResponse("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR.value()));
+	}
+
+	@ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+	public ResponseEntity<ErrorResponse> handleAccessDenied(
+			org.springframework.security.access.AccessDeniedException ex) {
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ErrorMapper
+				.toResponse("You don't have permission to perform this action", HttpStatus.FORBIDDEN.value()));
+	}
+	
+	@ExceptionHandler(InvalidResetCodeException.class)
+	public ResponseEntity<ErrorResponse> handlerInvalidResetCodeException(InvalidResetCodeException exception) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+				.body(ErrorMapper.toResponse(exception.getMessage(), HttpStatus.BAD_REQUEST.value()));
 	}
 }

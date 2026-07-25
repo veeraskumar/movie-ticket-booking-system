@@ -4,10 +4,11 @@ import java.util.List;
 
 import com.rvk.mtbs.dto.request.BookingRequest;
 import com.rvk.mtbs.dto.response.BookingResponse;
+import com.rvk.mtbs.entity.User;
 
 public interface BookingService {
 
-	BookingResponse create(BookingRequest request);
+	BookingResponse create(BookingRequest request, User user);
 
 	List<BookingResponse> getAll();
 

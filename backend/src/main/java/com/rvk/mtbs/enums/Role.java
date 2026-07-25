@@ -1,5 +1,5 @@
 package com.rvk.mtbs.enums;
 
 public enum Role {
-	USER, OWNER, ADMIN
+	USER, OWNER, ADMIN, MANAGER
 }

@@ -10,11 +10,11 @@ import com.rvk.mtbs.dto.request.TheaterRequest;
 import com.rvk.mtbs.dto.response.TheaterResponse;
 import com.rvk.mtbs.entity.Theater;
 import com.rvk.mtbs.entity.User;
+import com.rvk.mtbs.enums.City;
+import com.rvk.mtbs.enums.TheaterStatus;
 import com.rvk.mtbs.exception.TheaterNotFoundException;
-import com.rvk.mtbs.exception.UserNotFoundException;
 import com.rvk.mtbs.mapper.TheaterMapper;
 import com.rvk.mtbs.repository.TheaterRepository;
-import com.rvk.mtbs.repository.UserRepository;
 import com.rvk.mtbs.service.TheaterService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,14 +25,10 @@ import lombok.RequiredArgsConstructor;
 public class TheaterServiceImpl implements TheaterService {
 
 	private final TheaterRepository theaterRepository;
-	private final UserRepository userRepository;
 
 	@Override
 	@Transactional
-	public TheaterResponse create(TheaterRequest request) {
-		User user = userRepository.findById(request.userId())
-				.orElseThrow(() -> new UserNotFoundException("User not found"));
-
+	public TheaterResponse create(TheaterRequest request, User user) {
 		Theater theater = TheaterMapper.toEntity(request, user);
 		Theater savedTheater = theaterRepository.save(theater);
 		return TheaterMapper.toResponse(savedTheater);
@@ -41,6 +37,11 @@ public class TheaterServiceImpl implements TheaterService {
 	@Override
 	public List<TheaterResponse> getAll() {
 		return theaterRepository.findAll().stream().map(TheaterMapper::toResponse).toList();
+	}
+
+	@Override
+	public List<TheaterResponse> getAllByCity(City city) {
+		return theaterRepository.findAllByCity(city).stream().map(TheaterMapper::toResponse).toList();
 	}
 
 	@Override
@@ -65,15 +66,24 @@ public class TheaterServiceImpl implements TheaterService {
 		theater.setUpdatedAt(LocalDateTime.now());
 
 		Theater savedTheater = theaterRepository.save(theater);
-		
+
 		return TheaterMapper.toResponse(savedTheater);
 	}
 
 	@Override
 	@Transactional
-	public void delete(Long id) {
+	public TheaterResponse shutdown(Long id) {
 		Theater theater = theaterRepository.findById(id)
 				.orElseThrow(() -> new TheaterNotFoundException("Theater not found"));
-		theaterRepository.delete(theater);
+		theater.setStatus(TheaterStatus.SHUTDOWN);
+		theater.setUpdatedAt(LocalDateTime.now());
+		Theater savedTheater = theaterRepository.save(theater);
+		return TheaterMapper.toResponse(savedTheater);
 	}
+
+	@Override
+	public List<TheaterResponse> getTheatersByOwner(User user) {
+		return theaterRepository.findTheaterByOwner(user.getId()).stream().map(TheaterMapper::toResponse).toList();
+	}
+
 }
