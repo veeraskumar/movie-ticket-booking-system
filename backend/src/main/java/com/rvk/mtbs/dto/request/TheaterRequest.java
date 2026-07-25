@@ -13,7 +13,6 @@ public record TheaterRequest(
 		@NotNull(message = "City is required") City city,
 		@NotBlank(message = "Address is required") @Size(min = 3, message = "fill atleast 3 characters") String address,
 		@NotBlank(message = "Google Maps URL is required") @Size(min = 3, message = "fill atleast 3 characters") String googleMapUrl,
-		@NotNull(message = "Theater Status is required") TheaterStatus status,
-		@NotNull(message = "please fill User id") Long userId) {
+		@NotNull(message = "Theater Status is required") TheaterStatus status) {
 
 }

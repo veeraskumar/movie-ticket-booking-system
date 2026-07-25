@@ -2,6 +2,7 @@ package com.rvk.mtbs.mapper;
 
 import java.time.LocalDateTime;
 
+import com.rvk.mtbs.dto.request.UserCreateRequest;
 import com.rvk.mtbs.dto.request.UserRegisterRequest;
 import com.rvk.mtbs.dto.response.UserResponse;
 import com.rvk.mtbs.entity.User;
@@ -23,7 +24,6 @@ public final class UserMapper {
 
 		user.setName(request.name());
 		user.setEmail(request.email());
-		user.setPassword(request.password());
 		user.setRole(Role.USER);
 		user.setStatus(UserStatus.ACTIVE);
 		user.setCreatedAt(LocalDateTime.now());
@@ -31,5 +31,17 @@ public final class UserMapper {
 
 		return user;
 	}
-	
+
+	public static User toEntity(UserCreateRequest request) {
+		User user = new User();
+
+		user.setName(request.name());
+		user.setEmail(request.email());
+		user.setStatus(UserStatus.ACTIVE);
+		user.setCreatedAt(LocalDateTime.now());
+		user.setUpdatedAt(LocalDateTime.now());
+
+		return user;
+	}
+
 }

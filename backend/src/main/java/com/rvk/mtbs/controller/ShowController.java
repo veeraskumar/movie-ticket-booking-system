@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ public class ShowController {
 	private final ShowService showService;
 
 	@PostMapping
+	@PreAuthorize("hasRole('ADMIN') or @resourceSecurity.isTheaterOwner(#request.theaterId(), authentication)")
 	public ResponseEntity<ShowResponse> create(@Valid @RequestBody ShowRequest request) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(showService.create(request));
 	}
@@ -45,11 +47,13 @@ public class ShowController {
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN') or @resourceSecurity.isShowsTheaterOwner(#id, authentication)")
 	public ResponseEntity<ShowResponse> update(@PathVariable Long id, @Valid @RequestBody ShowRequest request) {
 		return ResponseEntity.ok(showService.update(id, request));
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN') or @resourceSecurity.isShowsTheaterOwner(#id, authentication)")
 	public ResponseEntity<ShowResponse> delete(@PathVariable Long id) {
 		showService.delete(id);
 		return ResponseEntity.noContent().build();
