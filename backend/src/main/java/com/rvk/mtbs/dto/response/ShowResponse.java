@@ -2,6 +2,8 @@ package com.rvk.mtbs.dto.response;
 
 import java.time.LocalDateTime;
 
+import com.rvk.mtbs.enums.ShowStatus;
+
 public record ShowResponse(
 	    Long id,
 	    String movieName,
@@ -18,6 +20,9 @@ public record ShowResponse(
 
 	    Integer reclinerSeatTo,
 	    Integer reclinerSeatPrice,
+	    
+	    ShowStatus status,
 
+	    Long theaterId,
 	    String theaterName
 	) {}

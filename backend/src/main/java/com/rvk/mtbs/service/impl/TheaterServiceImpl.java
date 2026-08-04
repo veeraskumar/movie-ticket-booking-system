@@ -40,15 +40,15 @@ public class TheaterServiceImpl implements TheaterService {
 	}
 
 	@Override
-	public List<TheaterResponse> getAllByCity(City city) {
-		return theaterRepository.findAllByCity(city).stream().map(TheaterMapper::toResponse).toList();
-	}
-
-	@Override
 	public TheaterResponse getById(Long id) {
 		Theater theater = theaterRepository.findById(id)
 				.orElseThrow(() -> new TheaterNotFoundException("Theater not found"));
 		return TheaterMapper.toResponse(theater);
+	}
+	
+	@Override
+	public List<TheaterResponse> getAllByCity(City city) {
+		return theaterRepository.findAllByCity(city).stream().map(TheaterMapper::toResponse).toList();
 	}
 
 	@Override
@@ -82,8 +82,9 @@ public class TheaterServiceImpl implements TheaterService {
 	}
 
 	@Override
-	public List<TheaterResponse> getTheatersByOwner(User user) {
-		return theaterRepository.findTheaterByOwner(user.getId()).stream().map(TheaterMapper::toResponse).toList();
+	public List<TheaterResponse> findByOwnerId(User user) {
+		return theaterRepository.findByOwner(user).stream().map(TheaterMapper::toResponse).toList();
 	}
+
 
 }

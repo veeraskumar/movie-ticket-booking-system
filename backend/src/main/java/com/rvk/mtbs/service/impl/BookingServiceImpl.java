@@ -91,6 +91,11 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
+	public List<BookingResponse> getAllById(Long userId) {
+		return bookingRepository.findAllByUserId(userId).stream().map(BookingMapper::toResponse).toList();
+	}
+
+	@Override
 	public BookingResponse getById(Long id) {
 		Booking booking = bookingRepository.findById(id)
 				.orElseThrow(() -> new BookingNotFoundException("Booking not found"));
@@ -99,17 +104,54 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	@Transactional
-	public BookingResponse cancel(Long id) {
-		Booking booking = bookingRepository.findById(id)
-				.orElseThrow(() -> new BookingNotFoundException("Booking not found"));
-		
-		booking.setStatus(BookingStatus.CANCELLED);
-		
-		List<Integer> seats = booking.getSeats().stream().map(BookingSeat::getSeatNumber).toList();
-		
-		emailService.sendBookingCancellation(booking.getUser().getEmail(), booking.getUser().getName(),
-				booking.getShow().getMovieName(), seats.toString(), booking.getTotalPrice());
+	public BookingResponse cancel(Long bookingId, List<Integer> seats) {
 
-		return BookingMapper.toResponse(booking);
+		Booking booking = bookingRepository.findById(bookingId)
+				.orElseThrow(() -> new BookingNotFoundException("Booking not found"));
+
+		List<BookingSeat> bookingSeats = booking.getSeats();
+
+		// Verify requested seats belong to this booking
+		for (Integer seat : seats) {
+			boolean exists = bookingSeats.stream().anyMatch(s -> s.getSeatNumber().equals(seat));
+
+			if (!exists) {
+				throw new InvalidSeatConfigurationException("Seat " + seat + " is not part of this booking");
+			}
+		}
+
+		// Remove selected seats
+		bookingSeats.removeIf(s -> seats.contains(s.getSeatNumber()));
+
+		// Recalculate total price
+		Show show = booking.getShow();
+		int totalPrice = 0;
+
+		for (BookingSeat seat : bookingSeats) {
+			int seatNo = seat.getSeatNumber();
+
+			if (seatNo <= show.getEconomySeatTo()) {
+				totalPrice += show.getEconomySeatPrice();
+			} else if (seatNo <= show.getPremiumSeatTo()) {
+				totalPrice += show.getPremiumSeatPrice();
+			} else {
+				totalPrice += show.getReclinerSeatPrice();
+			}
+		}
+
+		booking.setTotalPrice(totalPrice);
+
+		// Cancel booking if no seats remain
+		if (bookingSeats.isEmpty()) {
+			booking.setStatus(BookingStatus.CANCELLED);
+		}
+
+		Booking saved = bookingRepository.save(booking);
+
+		emailService.sendBookingCancellation(saved.getUser().getEmail(), saved.getUser().getName(),
+				saved.getShow().getMovieName(), seats.toString(), // only cancelled seats
+				totalPrice);
+
+		return BookingMapper.toResponse(saved);
 	}
 }

@@ -10,6 +10,5 @@ public record TheaterResponse(
 	    City city,
 	    String address,
 	    String googleMapUrl,
-	    TheaterStatus status,
-	    String ownerName
+	    TheaterStatus status
 	) {}

@@ -18,8 +18,8 @@ public final class BookingMapper {
 	public static BookingResponse toResponse(Booking booking) {
 		List<Integer> seatNumbers = booking.getSeats().stream().map(BookingSeat::getSeatNumber).toList();
 
-		return new BookingResponse(booking.getId(), booking.getShow().getMovieName(), seatNumbers,
-				booking.getTotalPrice(), booking.getStatus(), booking.getCreatedAt(), booking.getUser().getName());
+		return new BookingResponse(booking.getId(), booking.getShow().getId(),booking.getShow().getMovieName(), seatNumbers,
+				booking.getTotalPrice(), booking.getStatus(), booking.getCreatedAt());
 	}
 
 	public static Booking toEntity(List<Integer> seatNumbers, int totalPrice, Show show, User user) {

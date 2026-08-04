@@ -45,15 +45,15 @@ public class TheaterController {
 		return ResponseEntity.ok(theaterService.getAll());
 	}
 
-	@GetMapping("/owner")
-	@PreAuthorize("hasAnyRole('OWNER','ADMIN')")
-	public ResponseEntity<List<TheaterResponse>> getAllByOwner(@AuthenticationPrincipal CustomUserDetails UserDetails) {
-		return ResponseEntity.ok(theaterService.getTheatersByOwner(UserDetails.getUser()));
-	}
-
 	@GetMapping("/city/{city}")
 	public ResponseEntity<List<TheaterResponse>> getAllByCity(@PathVariable City city) {
 		return ResponseEntity.ok(theaterService.getAllByCity(city));
+	}
+
+	@GetMapping("/owner")
+	@PreAuthorize("hasAnyRole('OWNER','ADMIN')")
+	public ResponseEntity<List<TheaterResponse>> getAllByOwner(@AuthenticationPrincipal CustomUserDetails UserDetails) {
+		return ResponseEntity.ok(theaterService.findByOwnerId(UserDetails.getUser()));
 	}
 
 	@GetMapping("/{id}")

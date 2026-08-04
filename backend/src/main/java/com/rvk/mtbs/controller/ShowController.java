@@ -37,6 +37,7 @@ public class ShowController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<ShowResponse>> getAll() {
 		return ResponseEntity.ok(showService.getAll());
 	}
@@ -44,6 +45,11 @@ public class ShowController {
 	@GetMapping("/{id}")
 	public ResponseEntity<ShowResponse> getById(@PathVariable Long id) {
 		return ResponseEntity.ok(showService.getById(id));
+	}
+	
+	@GetMapping("/{showId}/seats")
+	public ResponseEntity<List<Integer>> getConfirmedSeats(@PathVariable Long showId) {
+		return ResponseEntity.ok(showService.getConfirmedSeats(showId));
 	}
 
 	@PutMapping("/{id}")
@@ -57,5 +63,10 @@ public class ShowController {
 	public ResponseEntity<ShowResponse> delete(@PathVariable Long id) {
 		showService.delete(id);
 		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/theater/{theaterId}")
+	public ResponseEntity<List<ShowResponse>> getByTheater(@PathVariable Long theaterId) {
+		return ResponseEntity.ok(showService.findByTheater(theaterId));
 	}
 }

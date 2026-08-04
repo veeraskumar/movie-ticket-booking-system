@@ -14,5 +14,7 @@ public interface BookingService {
 
 	BookingResponse getById(Long id);
 
-	BookingResponse cancel(Long id);
+	BookingResponse cancel(Long id, List<Integer> seats);
+
+	List<BookingResponse> getAllById(Long userId);
 }

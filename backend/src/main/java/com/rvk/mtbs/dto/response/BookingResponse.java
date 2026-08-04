@@ -7,10 +7,10 @@ import com.rvk.mtbs.enums.BookingStatus;
 
 public record BookingResponse(
 	    Long id,
+	    Long showId,
 	    String movieName,
 	    List<Integer> seatNumbers,
 	    Integer totalPrice,
 	    BookingStatus status,
-	    LocalDateTime createdAt,
-	    String userName
+	    LocalDateTime createdAt
 	) {}

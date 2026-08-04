@@ -6,6 +6,7 @@ import com.rvk.mtbs.dto.request.ShowRequest;
 import com.rvk.mtbs.dto.response.ShowResponse;
 import com.rvk.mtbs.entity.Show;
 import com.rvk.mtbs.entity.Theater;
+import com.rvk.mtbs.enums.ShowStatus;
 
 public final class ShowMapper {
 
@@ -16,7 +17,7 @@ public final class ShowMapper {
 		return new ShowResponse(show.getId(), show.getMovieName(), show.getRoomNumber(), show.getStartTime(),
 				show.getDurationMinutes(), show.getTotalSeats(), show.getEconomySeatTo(), show.getEconomySeatPrice(),
 				show.getPremiumSeatTo(), show.getPremiumSeatPrice(), show.getReclinerSeatTo(),
-				show.getReclinerSeatPrice(), show.getTheater().getName());
+				show.getReclinerSeatPrice(),show.getStatus(), show.getTheater().getId(), show.getTheater().getName());
 	}
 
 	public static Show toEntity(ShowRequest request, Theater theater) {
@@ -35,6 +36,7 @@ public final class ShowMapper {
 		show.setReclinerSeatPrice(request.reclinerSeatPrice());
 		show.setCreatedAt(LocalDateTime.now());
 		show.setTheater(theater);
+		show.setStatus(ShowStatus.UPCOMING);
 
 		return show;
 	}

@@ -12,14 +12,15 @@ public interface TheaterService {
 	TheaterResponse create(TheaterRequest request, User user);
 
 	List<TheaterResponse> getAll();
-	
+
 	List<TheaterResponse> getAllByCity(City city);
-	
-	List<TheaterResponse> getTheatersByOwner(User user);
+
+	List<TheaterResponse> findByOwnerId(User user);
 
 	TheaterResponse getById(Long id);
 
 	TheaterResponse update(Long id, TheaterRequest request);
 
 	TheaterResponse shutdown(Long id);
+
 }

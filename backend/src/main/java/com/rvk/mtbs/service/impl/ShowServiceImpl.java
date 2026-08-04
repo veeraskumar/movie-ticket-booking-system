@@ -1,5 +1,6 @@
 package com.rvk.mtbs.service.impl;
 
+import com.rvk.mtbs.repository.BookingSeatRepository;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import com.rvk.mtbs.dto.request.ShowRequest;
 import com.rvk.mtbs.dto.response.ShowResponse;
 import com.rvk.mtbs.entity.Show;
 import com.rvk.mtbs.entity.Theater;
+import com.rvk.mtbs.enums.ShowStatus;
 import com.rvk.mtbs.exception.InvalidSeatConfigurationException;
 import com.rvk.mtbs.exception.ShowNotFoundException;
 import com.rvk.mtbs.exception.TheaterNotFoundException;
@@ -24,8 +26,10 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class ShowServiceImpl implements ShowService {
 
+	private final BookingSeatRepository bookingSeatRepository;
 	private final ShowRepository showRepository;
 	private final TheaterRepository theaterRepository;
+
 
 	@Override
 	@Transactional
@@ -65,6 +69,7 @@ public class ShowServiceImpl implements ShowService {
 	@Transactional
 	public ShowResponse update(Long id, ShowRequest request) {
 		Show show = showRepository.findById(id).orElseThrow(() -> new ShowNotFoundException("Show not Found"));
+		
 		Theater theater = theaterRepository.findById(request.theaterId())
 				.orElseThrow(() -> new TheaterNotFoundException("Theater not found"));
 
@@ -100,7 +105,18 @@ public class ShowServiceImpl implements ShowService {
 	@Transactional
 	public void delete(Long id) {
 		Show show = showRepository.findById(id).orElseThrow(() -> new ShowNotFoundException("Show not Found"));
-		showRepository.delete(show);
+		show.setStatus(ShowStatus.CANCELLED);
+		showRepository.save(show);
+	}
+
+	@Override
+	public List<ShowResponse> findByTheater(Long theaterId) {
+		return showRepository.findByTheaterId(theaterId).stream().map(ShowMapper::toResponse).toList();
+	}
+
+	@Override
+	public List<Integer> getConfirmedSeats(Long showId) {
+		return bookingSeatRepository.findBookedSeatNumbers(showId);
 	}
 
 }

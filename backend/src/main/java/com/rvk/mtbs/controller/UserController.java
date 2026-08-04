@@ -46,10 +46,10 @@ public class UserController {
 		return ResponseEntity.ok(userService.getAll());
 	}
 
-	@GetMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN') or @resourceSecurity.isSelf(#id, authentication)")
-	public ResponseEntity<UserResponse> getById(@PathVariable Long id) {
-		return ResponseEntity.ok(userService.getById(id));
+	@GetMapping("/me")
+	@PreAuthorize("isAuthenticated()")
+	public ResponseEntity<UserResponse> getById(@AuthenticationPrincipal CustomUserDetails details) {
+		return ResponseEntity.ok(userService.getById(details.getUser().getId()));
 	}
 
 	@PutMapping("/{id}")

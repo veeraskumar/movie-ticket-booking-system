@@ -7,9 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.rvk.mtbs.entity.Booking;
 import com.rvk.mtbs.enums.BookingStatus;
 
-public interface BookingRepository extends JpaRepository<Booking, Long>{
+public interface BookingRepository extends JpaRepository<Booking, Long> {
 
-    List<Booking> findByShowIdAndStatus(Long showId, BookingStatus status);
-    
-    List<Booking> findAllByUserId(Long user_id);
+	List<Booking> findByShowIdAndStatus(Long showId, BookingStatus status);
+
+	List<Booking> findAllByUserId(Long userId);
+
+
 }

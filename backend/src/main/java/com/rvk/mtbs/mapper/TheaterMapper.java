@@ -14,7 +14,7 @@ public final class TheaterMapper {
 
 	public static TheaterResponse toResponse(Theater theater) {
 		return new TheaterResponse(theater.getId(), theater.getName(), theater.getNoOfRooms(), theater.getCity(),
-				theater.getAddress(), theater.getGoogleMapUrl(), theater.getStatus(), theater.getOwner().getName());
+				theater.getAddress(), theater.getGoogleMapUrl(), theater.getStatus());
 	}
 
 	public static Theater toEntity(TheaterRequest request, User user) {

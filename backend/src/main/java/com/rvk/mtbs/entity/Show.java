@@ -2,8 +2,12 @@ package com.rvk.mtbs.entity;
 
 import java.time.LocalDateTime;
 
+import com.rvk.mtbs.enums.ShowStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -54,6 +58,10 @@ public class Show {
 
 	@Column(nullable = false)
 	private Integer reclinerSeatPrice;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private ShowStatus status;
 
 	private LocalDateTime createdAt;
 

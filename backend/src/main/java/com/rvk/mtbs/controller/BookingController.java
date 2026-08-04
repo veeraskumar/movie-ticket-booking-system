@@ -43,6 +43,12 @@ public class BookingController {
 		return ResponseEntity.ok(bookingService.getAll());
 	}
 
+	@GetMapping("/user")
+	@PreAuthorize("hasAnyRole('MANAGER','ADMIN','OWNER','USER')")
+	public ResponseEntity<List<BookingResponse>> getAllByUser(@AuthenticationPrincipal CustomUserDetails details) {
+		return ResponseEntity.ok(bookingService.getAllById(details.getUser().getId()));
+	}
+
 	@GetMapping("/{id}")
 	@PreAuthorize("hasAnyRole('MANAGER','ADMIN') or @resourceSecurity.isBookingOwner(#id, authentication)")
 	public ResponseEntity<BookingResponse> getById(@PathVariable Long id) {
@@ -51,8 +57,8 @@ public class BookingController {
 
 	@PutMapping("/{id}/cancel")
 	@PreAuthorize("hasAnyRole('MANAGER','ADMIN') or @resourceSecurity.isBookingOwner(#id, authentication)")
-	public ResponseEntity<BookingResponse> cancel(@PathVariable Long id) {
-		return ResponseEntity.ok(bookingService.cancel(id));
+	public ResponseEntity<BookingResponse> cancel(@PathVariable Long id, @RequestBody List<Integer> seats) {
+		return ResponseEntity.ok(bookingService.cancel(id, seats));
 	}
 
 }
