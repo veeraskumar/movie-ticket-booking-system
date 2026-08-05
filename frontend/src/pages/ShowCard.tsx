@@ -10,7 +10,7 @@ import Navbar from "@/components/Navbar";
 export default function ShowCard() {
   const { id } = useParams();
 
-  const [show, setShow] = useState<ShowType>(null);
+  const [show, setShow] = useState<ShowType | null>(null);
 
   useEffect(() => {
     const loadShow = async () => {

@@ -29,6 +29,8 @@ export default function Navbar() {
     naviagte(0);
   };
 
+  if (!user) return null;
+
   return (
     <nav className="w-full h-16 flex border-b justify-between p-5 sticky top-0 bg-background z-10">
       <div className="flex items-center gap-4 flex-1">

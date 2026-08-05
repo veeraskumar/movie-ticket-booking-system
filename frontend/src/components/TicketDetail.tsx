@@ -51,7 +51,7 @@ export default function TicketDetail({
 
   const submit = async () => {
     setLoading(true);
-    await cancelTicket(ticket.id, selected);
+    await cancelTicket(ticket!.id, selected);
     toast.add({
       type: "info",
       description: `Seat Canceled ${selected.join(", ")}`,
