@@ -13,7 +13,7 @@ export default function AvatarMenu() {
       className="cursor-pointer"
       onClick={() => setOpenSidebar(!openSidebar)}
     >
-      <AvatarFallback>{user.sub[0].toUpperCase()}</AvatarFallback>
+      <AvatarFallback>{user?.sub[0].toUpperCase()}</AvatarFallback>
       {openSidebar && <SideBar onClose={() => setOpenSidebar(false)} />}
     </Avatar>
   );

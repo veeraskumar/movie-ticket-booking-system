@@ -40,10 +40,25 @@ export default function TheaterDashboard() {
     return (
       <>
         <Navbar />
+        <div className="flex items-center justify-between p-3">
+          <h2 className="text-2xl font-bold m-5"> My Theaters</h2>
+          <Button type="button" onClick={() => setCreate(true)}>
+            Create Theater
+          </Button>
+        </div>
         <div className="flex h-80 items-center justify-center">
           <p className="text-muted-foreground">
             You haven't added any theaters yet.
           </p>
+          {create && (
+            <CreateTheater
+              open={true}
+              onRefresh={load}
+              onOpenChange={(open) => {
+                if (!open) setCreate(false);
+              }}
+            />
+          )}
         </div>
       </>
     );

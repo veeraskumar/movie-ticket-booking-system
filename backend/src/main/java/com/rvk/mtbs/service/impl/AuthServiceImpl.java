@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rvk.mtbs.dto.request.LoginRequest;
 import com.rvk.mtbs.dto.request.UserRegisterRequest;
@@ -27,11 +28,11 @@ import com.rvk.mtbs.service.AuthService;
 import com.rvk.mtbs.service.EmailService;
 import com.rvk.mtbs.util.GenerateResetCode;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AuthServiceImpl implements AuthService {
 
 	private final PasswordEncoder encoder;
