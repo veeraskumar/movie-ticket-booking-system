@@ -128,7 +128,7 @@ export default function ShowDashboard() {
           </Card>
         ))}
       </div>
-      {create && (
+      {create && theater && (
         <CreateShow
           theater={theater}
           theaterId={Number(id)}
@@ -139,7 +139,7 @@ export default function ShowDashboard() {
           }}
         />
       )}
-      {editShow && (
+      {editShow && theater && (
         <EditShow
           show={editShow}
           theater={theater}

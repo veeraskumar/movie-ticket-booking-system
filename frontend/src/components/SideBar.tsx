@@ -23,6 +23,8 @@ export default function SideBar({ onClose }: { onClose: () => void }) {
   const location = useLocation();
   const navigate = useNavigate();
 
+  if (!user) return null;
+
   const userLinkList: userLinkListType[] = [
     { name: "Tickets", href: "/booking", icon: ListIcon },
     { name: "Profile", href: "/profile", icon: User },

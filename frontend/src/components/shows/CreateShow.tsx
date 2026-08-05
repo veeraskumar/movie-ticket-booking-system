@@ -10,7 +10,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/toast";
 import { ShowSchema, type Show } from "@/schemas/show";
-import type { ShowType } from "@/types/Show";
 import type { TheaterType } from "@/types/Theater";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -46,7 +45,7 @@ export default function CreateShow({
     },
   });
 
-  const submit = async (data: ShowType) => {
+  const submit = async (data: Show) => {
     try {
       if (data.roomNumber > theater.noOfRoom) {
         form.setError("roomNumber", {

@@ -6,6 +6,7 @@ import { useState } from "react";
 export default function AvatarMenu() {
   const user = isLogin();
   const [openSidebar, setOpenSidebar] = useState(false);
+  if (!user) return null;
 
   return (
     <Avatar

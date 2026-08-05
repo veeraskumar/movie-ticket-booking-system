@@ -10,6 +10,8 @@ export default function ProtectedRoute({
 }) {
   const user = isLogin();
 
+  if (!user) return null;
+
   if (!user) return <Navigate to={"/login"} replace />;
 
   if (roles && !roles.some((role) => user.role.includes(role)))
