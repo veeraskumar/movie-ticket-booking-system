@@ -22,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
-@Transactional(readOnly = true)
 public class AuthController {
 
 	private final AuthService authService;
