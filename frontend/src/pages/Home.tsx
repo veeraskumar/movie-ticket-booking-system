@@ -9,6 +9,7 @@ export default function Home() {
     (localStorage.getItem("city") as City) ?? "CHENNAI",
   );
   const [theaters, setTheaters] = useState<TheaterType[]>([]);
+
   useEffect(() => {
     const loadTheater = async () => {
       const theaterResponse = await getTheaters(city);

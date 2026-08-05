@@ -47,10 +47,27 @@ export default function ShowDashboard() {
     return (
       <>
         <Navbar />
+        <div className="flex items-center justify-between p-3">
+          <h2 className="text-2xl font-bold m-5"> My Theaters</h2>
+          <Button type="button" onClick={() => setCreate(true)}>
+            Create Show
+          </Button>
+        </div>
         <div className="flex h-80 items-center justify-center">
           <p className="text-muted-foreground">
             No shows have been created for this theater yet.
           </p>
+          {create && theater && (
+            <CreateShow
+              theater={theater}
+              theaterId={Number(id)}
+              open={true}
+              onRefresh={load}
+              onChangeOpen={(open) => {
+                if (!open) setCreate(false);
+              }}
+            />
+          )}
         </div>
       </>
     );

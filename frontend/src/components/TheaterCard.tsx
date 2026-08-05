@@ -19,6 +19,7 @@ import {
 import { Link } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import Loading from "./Loading";
 
 export default function TheaterCard({
   theaterId,
@@ -27,7 +28,8 @@ export default function TheaterCard({
   theaterId: number;
   theaterName: string;
 }) {
-  const [shows, setShows] = useState<ShowType[]>([]);
+  const [shows, setShows] = useState<ShowType[] | null>(null);
+
   useEffect(() => {
     const loadShow = async () => {
       const res = await theaterShows(theaterId);
@@ -35,6 +37,8 @@ export default function TheaterCard({
     };
     loadShow();
   }, [theaterId]);
+
+  if (shows === null) return <Loading />;
 
   if (shows.length === 0) {
     return (
