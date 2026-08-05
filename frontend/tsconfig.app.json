@@ -8,8 +8,8 @@
     "allowArbitraryExtensions": true,
     "skipLibCheck": true,
 
-    /* Alias for shadcn-ui*/
-    // "baseUrl": ".",
+    /* Alias for shadcn-ui */
+    // "baseUrl": "."
     "paths": {
       "@/*": ["./src/*"]
     },
